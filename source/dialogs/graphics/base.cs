@@ -38,9 +38,9 @@ namespace SW220
 
 				// Style definitions //
 				var Frame = new Markup(
-					"[white on silver]│" +
-					General.Repeat(" ", width - 2) +
-					"[/][black on silver]│[/]" +
+					"[white on silver]│" 				+
+					General.Repeat(" ", width - 2) 		+
+					"[/][black on silver]│[/]" 			+
 					"[black on black]  [/]"
 				);
 				var Message = new Markup("");
@@ -64,6 +64,28 @@ namespace SW220
 
 				// Return number of lines that were drawn	//
 				// (to be able to calculate next position)	//
+				return pos_y;
+			}
+
+			public static int PanelHead(int x, int y, int pos_y, int width, Theme? theme = null)
+			{
+				// If there is no defined theme, dialog will use default one.	//
+				// (New instance of "Theme" [file: source/dialogs/theme.cs] )	//
+				theme ??= new Theme();
+
+				// Style definitions //
+				var Frame = new Markup(
+					"[white on silver]├" +
+					General.Repeat("─", width - 2) +
+					"[/][black on silver]┤[/]" +
+					"[black on black]  [/]"
+				);
+
+				// Draw panel head of the dialog //
+				AnsiConsole.Cursor.SetPosition(x, y + pos_y);
+				AnsiConsole.Write(Frame);
+				pos_y++;
+
 				return pos_y;
 			}
 		}
