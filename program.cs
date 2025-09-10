@@ -8,8 +8,8 @@
 			Console.WriteLine("--- SW220 LIB ---");
 
 			int i;
-			Dialogs.Draw.Head(16, 4, 48, "About library: SW220");
-			i = Dialogs.Draw.BodyMessage(16, 4, 48, new string[] {
+			Dialogs.Draw.Head(6, 4, 48, "About library: SW220");
+			i = Dialogs.Draw.BodyMessage(6, 4, 48, new string[] {
 				"SW220 is a C# library for building console",
 				"applications with advanced user interface.",
 				"",
@@ -19,9 +19,27 @@
 				"(c) 2025 SW220 contributors"
 			});
 
-			i = Dialogs.Draw.PanelHead(16, 15, 4 - i + 1, 48);
-			i = Dialogs.Draw.PanelBody(16, 15, i, 48, 0);
-			Dialogs.Draw.PanelEnd(16, 15, i, 48);
+			//i = Dialogs.Draw.PanelHead(6, 15, 4 - i + 1, 48);
+			//i = Dialogs.Draw.PanelBody(6, 15, i, 48, 0);
+			Dialogs.Draw.PanelEnd(6, 4, i, 48);
+
+			int x;
+			Dialogs.Draw.Head(60, 4, 48, "Menu example:");
+			x = Dialogs.Draw.BodyMessage(60, 4, 48, new string[] {
+				"Use Up/Down arrow keys to select",
+				"an item and Enter to confirm."
+			});
+			Dictionary<string, string> menu_items = new Dictionary<string, string>()
+			{
+				{ "I1", "Description of the item" },
+				{ "I2", "Description of the item" },
+				{ "I3", "Description of the item" },
+				{ "I4", "Description of the item" },
+				{ "I5", "Description of the item" }
+			};
+
+			x = Dialogs.Draw.MenuHead(60, 4, x, 48);
+			x = Dialogs.Draw.MenuBody(60, 4, x, 48, 2, menu_items);
 
 
 			// Exit //
