@@ -43,8 +43,21 @@
 			x = Dialogs.Draw.MenuEnd(60, 4, x, 48);
 			Dialogs.Draw.PanelEnd(60, 4, x, 48);
 
+			Console.ReadKey();
+
+			// Prefab use 							//
+			// (A complete dialog in a single call) //
+			string input = Dialogs.Menu(48, "Menu dialog prefab", new string[] {
+				"Use Up/Down arrow keys to select",
+				"an item and Enter to confirm.",
+				"",
+				"Press Tab to switch between menu",
+				"and panel and Esc to exit dialog."
+			}, menu_items);
+
 
 			// Exit //
+			Console.WriteLine(input);
 			Console.ReadKey();
 			return;
 		}
