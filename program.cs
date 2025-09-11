@@ -7,59 +7,49 @@
 			// Program entrance //
 			Console.WriteLine("--- SW220 LIB ---");
 
-			int i;
-			Dialogs.Draw.Head(6, 4, 48, "About library: SW220");
-			i = Dialogs.Draw.BodyMessage(6, 4, 48, new string[] {
-				"SW220 is a C# library for building console",
-				"applications with advanced user interface.",
-				"",
-				"It is based on Spectre.Console library",
-				"(https://spectreconsole.net/).",
-				"",
-				"(c) 2025 SW220 contributors"
-			});
+			int OL_Width = 40;
+			int OL_PosX = Console.WindowWidth - OL_Width - 2;
+			int OL_PosY = 2;
 
-			//i = Dialogs.Draw.PanelHead(6, 15, 4 - i + 1, 48);
-			//i = Dialogs.Draw.PanelBody(6, 15, i, 48, 0);
-			Dialogs.Draw.PanelEnd(6, 4, i, 48);
+			Thread OL_Thread = new Thread(() => Dialogs.Overlays.DateTimeOL(OL_PosX, OL_PosY, OL_Width));
 
-			int x;
-			Dialogs.Draw.Head(60, 4, 48, "Menu example:");
-			x = Dialogs.Draw.BodyMessage(60, 4, 48, new string[] {
-				"Use Up/Down arrow keys to select",
-				"an item and Enter to confirm."
-			});
-			Dictionary<string, string> menu_items = new Dictionary<string, string>()
-			{
-				{ "I1", "Description of the item" },
-				{ "I2", "Description of the item" },
-				{ "I3", "Description of the item" },
-				{ "I4", "Description of the item" },
-				{ "I5", "Description of the item" }
-			};
+			OL_Thread.Start();
+			Thread.Sleep(100); // Give overlay some time to start
 
-			x = Dialogs.Draw.MenuHead(60, 4, x, 48);
-			x = Dialogs.Draw.MenuBody(60, 4, x, 48, 2, menu_items);
-			x = Dialogs.Draw.MenuEnd(60, 4, x, 48);
-			Dialogs.Draw.PanelEnd(60, 4, x, 48);
+			Repeat:
+			string Input = Dialogs.Menu(48, "Main menu", new string[] {
+				"Use up and down arrows to navigate",
+				"Press Enter to select an item" }, new Dictionary<string, string> {
+				{ "A1", "About library" },
+				{ "A2", "Stop date & time overlay"},
+				{ "EX", "Exit application" } });
 
-			Console.ReadKey();
-
-			// Prefab use 							//
-			// (A complete dialog in a single call) //
-			string input = Dialogs.Menu(48, "Menu dialog prefab", new string[] {
-				"Use Up/Down arrow keys to select",
-				"an item and Enter to confirm.",
-				"",
-				"Press Tab to switch between menu",
-				"and panel and Esc to exit dialog."
-			}, menu_items);
-
+			if (Input == "A1") { MenuItems.About(); goto Repeat; }
+			else if (Input == "A2") { Dialogs.Overlays.Break_DateTimeOL = true; goto Repeat; }
+			else if (Input == "EX") { /* Exit app */ }
+			else { Console.WriteLine("Invalid input!"); goto Repeat; 	}
 
 			// Exit //
-			Console.WriteLine(input);
-			Console.ReadKey();
+				Console.ReadKey();
 			return;
+		}
+
+		static class MenuItems
+		{
+			public static void About()
+			{
+				Dialogs.Info(48, "About library: SW220", new string[] {
+					"SW220 is a C# library for building console",
+					"application with advanced user interface.",
+					"",
+					"It is based on Spectre.Console library",
+					"(https://spectreconsole.net/)).",
+					"",
+					"(c) 2025 SW220 contributors"
+				});
+
+				return;
+			}
 		}
 	}
 }
