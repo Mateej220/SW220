@@ -141,6 +141,44 @@ namespace SW220
 				return pos_y;
 			}
 
+			public static int PanelBody(int x, int y, int pos_y, int width, int select, string txt_okay = "Okay", Theme? theme = null)
+			{
+				// If there is no defined theme, dialog will use default one.	//
+				// (New instance of "Theme" [file: source/dialogs/theme.cs] )	//
+				theme ??= new Theme();
+
+				// Style definitions //
+				var Frame = new Markup(
+					"[white on silver]│" +
+					General.Repeat(" ", width - 2) +
+					"[/][black on silver]│[/]" +
+					"[black on black]  [/]"
+				);
+				var ButtonOkay = new Markup("");
+
+				// Button selection handling			//
+				if (select == 0)    // Highlight "Okay" button	//
+				{
+					ButtonOkay = new Markup(theme.text_highlight_01 + "< " + txt_okay + " >" + "[/]");
+				}
+				else            	// No button is highlighted	// - pretty useless unless you want to display both buttons as inactive
+				{
+					ButtonOkay = new Markup(theme.text_normal + "< " + txt_okay + " >" + "[/]");
+				}
+
+				// Draw panel body of the dialog //
+				AnsiConsole.Cursor.SetPosition(x, y + pos_y);
+				AnsiConsole.Write(Frame);
+
+				AnsiConsole.Cursor.SetPosition(x + width / 2 - (ButtonOkay.Length / 2), y + pos_y);
+				AnsiConsole.Write(ButtonOkay);
+				pos_y++;
+
+				// Return number of lines that were drawn	//
+				// (to be able to calculate next position)	//
+				return pos_y;
+			}
+
 			public static void PanelEnd(int x, int y, int pos_y, int width, Theme? theme = null)
 			{
 				// If there is no defined theme, dialog will use default one.	//
