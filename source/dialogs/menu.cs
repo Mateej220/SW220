@@ -54,7 +54,7 @@ namespace SW220
 
 				if (Input.Key == ConsoleKey.Enter)
 				{
-					if (option == 1) { Output = items.ElementAt(select - 1).Key; break; }
+					if (option == 0) { Output = items.ElementAt(select - 1).Key; break; }
 					else { Output = "@exited"; break; }
 				}
 				if (Input.Key == ConsoleKey.Escape)
@@ -68,8 +68,10 @@ namespace SW220
 				if (Input.Key == ConsoleKey.Tab) { switch (option) { case 0: option = 1; break; case 1: option = 0; break; } }
 			}
 
-			// Clear console and return output value		//
+			// Clear console and return output value 		//
+			// Enabling cursor								//
 			Console.Clear();
+			AnsiConsole.Cursor.Show();
 			return Output;
 		}
 	}
