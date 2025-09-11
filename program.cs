@@ -40,6 +40,8 @@
 
 			x = Dialogs.Draw.MenuHead(60, 4, x, 48);
 			x = Dialogs.Draw.MenuBody(60, 4, x, 48, 2, menu_items);
+			x = Dialogs.Draw.MenuEnd(60, 4, x, 48);
+			Dialogs.Draw.PanelEnd(60, 4, x, 48);
 
 
 			// Exit //
