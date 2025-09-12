@@ -9,7 +9,7 @@ namespace SW220
 			public static bool Break_DateTimeOL = false;
 
 			// -- Date and time dialog overlay prefab --- //
-			public static void DateTimeOL(int x, int y, int width = 40, string title = "Date & time overlay", Theme? theme = null)
+			public static void DateTimeOL(int x, int y, int width = 40, string title = "Date & time overlay", int refresh_rate = 5000, Theme? theme = null)
 			{
 				// If there is no defined theme, dialog will use default one.	//
 				// (New instance of "Theme" [file: source/dialogs/theme.cs] )	//
@@ -32,7 +32,7 @@ namespace SW220
 					Y = Draw.BodyMessage(x, y, width, content, theme);
 					Draw.PanelEnd(x, y, Y, width, theme);
 
-					Thread.Sleep(1000 * 5);
+					Thread.Sleep(refresh_rate);
 				}
 
 				// Draws the dialog last time with "STOP" at the title to indicate that the thread has ended. //
