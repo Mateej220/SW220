@@ -25,7 +25,7 @@ namespace SW220
 				while (Break_DateTimeOL == false)
 				{
 					// Give some time to make dialogs on main thread not clear just rendered overlay //
-					Thread.Sleep(128);
+					Thread.Sleep(192);
 
 					content = [
 						$"{DateTime.Now.ToString("dddd dd 'of the' MMMM yyyy", culture)}",
