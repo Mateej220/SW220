@@ -27,7 +27,8 @@
 			if (Input == "A1") { MenuItems.About(); goto Repeat; }
 			else if (Input == "A2") { Dialogs.Overlays.Break_DateTimeOL = true; goto Repeat; }
 			else if (Input == "EX") { /* Exit app */ }
-			else { Console.WriteLine("Invalid input!"); goto Repeat; 	}
+			else if (Input == "@exited") { /* Exit app */ }
+			else { Console.WriteLine("Invalid input!"); goto Repeat; }
 
 			// Exit //
 				Console.ReadKey();
