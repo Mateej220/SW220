@@ -15,17 +15,21 @@ namespace SW220
 				// (New instance of "Theme" [file: source/dialogs/theme.cs] )	//
 				theme ??= new Theme();
 
+				// Culture info for date formatting //
 				var culture = new CultureInfo("en-US");
 				string[] content;
 				int Y;
 
+				// Render overlay loop 										//
+				// (Redraws the overlay every [refresh_rate] milliseconds)	//
 				while (Break_DateTimeOL == false)
 				{
-					Thread.Sleep(250); 
+					// Give some time to make dialogs on main thread not clear just rendered overlay //
+					Thread.Sleep(128);
 
 					content = [
 						$"{DateTime.Now.ToString("dddd dd 'of the' MMMM yyyy", culture)}",
-    					$"{DateTime.Now:HH:mm}"
+						$"{DateTime.Now:HH:mm}"
 					];
 
 					Draw.Head(x, y, width, title, theme);
@@ -45,6 +49,7 @@ namespace SW220
 				Y = Draw.BodyMessage(x, y, width, content, theme);
 				Draw.PanelEnd(x, y, Y, width, theme);
 
+				// Reset the break flag for future use //
 				Break_DateTimeOL = false;
 				return;
 			}
