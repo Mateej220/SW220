@@ -31,7 +31,11 @@
 			else { Console.WriteLine("Invalid input!"); goto Repeat; }
 
 			// Exit //
-				Console.ReadKey();
+			
+			// Wait for the overlay thread to finish peacefully before exiting the program //
+			// OL_Thread.Abort(); // (forcefully stops the thread - throws exception around platform support)
+			Dialogs.Overlays.Break_DateTimeOL = true;
+			OL_Thread.Join();
 			return;
 		}
 
