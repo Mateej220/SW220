@@ -11,7 +11,7 @@
 			int OL_PosX = Console.WindowWidth - OL_Width - 2;
 			int OL_PosY = 2;
 
-			Thread OL_Thread = new Thread(() => Dialogs.Overlays.DateTimeOL(OL_PosX, OL_PosY, OL_Width));
+			Thread OL_Thread = new(() => Dialogs.Overlays.DateTimeOL(OL_PosX, OL_PosY, OL_Width));
 
 			OL_Thread.Start();
 			Thread.Sleep(100); // Give overlay some time to start
