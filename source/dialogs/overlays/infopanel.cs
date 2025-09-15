@@ -39,6 +39,8 @@ namespace SW220
 					Thread.Sleep(refresh_rate);
 				}
 
+				// Reset the break flag for future use //
+				Break_InfoPanelOL = false;
 				return;
 			}	
 		}
