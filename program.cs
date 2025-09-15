@@ -5,6 +5,7 @@
 		static void Main(string[] args)
 		{
 			// Program entrance //
+			Dialogs.Input(48, "Login window", ["Username:"]);
 			Console.WriteLine("--- SW220 LIB ---");
 
 			int OL_Width = 40;
