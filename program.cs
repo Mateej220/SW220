@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata;
-
-namespace SW220
+﻿namespace SW220
 {
 	public class Program
 	{
@@ -11,12 +9,22 @@ namespace SW220
 
 		public static Thread OL_Thread1 = new(() => Dialogs.Overlays.DateTimeOL(OLDT_PosX, OLDT_PosY, OLDT_Width));
 		public static Thread OL_Thread2 = new(() => Dialogs.Overlays.InfoPanelOL());
-		public static Thread OL_Thread3 = null!;
+		public static Thread OL_Thread3 = null!; // Performance overlay not implemented on Linux
 
 		static void Main(string[] args)
 		{
 			// Program entrance //
 			Console.WriteLine("--- SW220 LIB ---");
+
+			Dialogs.Info(48, "Welcome to SW220 library!", new string[] {
+				"This is a demo application showcasing",
+				"the features of the SW220 library.",
+				"",
+				"Login with username: Administrator",
+				"and password: administrator128",
+				"",
+				"Press OK to continue."
+			});
 
 		URepeat:
 			if (Dialogs.Input(48, "Login window", ["Username:"], "Next", false) == "Administrator") { }
@@ -72,7 +80,7 @@ namespace SW220
 			{
 				string DT_Status = OL_Thread1.IsAlive ? "Stop" : "Start";
 				string IP_Status = OL_Thread2.IsAlive ? "Stop" : "Start";
-				string PC_Status = "Start";//OL_Thread3.IsAlive ? "Start" : "Stop";
+				string PC_Status = "----";//OL_Thread3.IsAlive ? "Start" : "Stop";
 
 				var Input = Dialogs.Menu(48, "Thread management", new string[] {
 					"Use up and down arrows to navigate",
@@ -93,8 +101,22 @@ namespace SW220
 				}
 				else if (Input == "PC")
 				{
-					if (OL_Thread3.IsAlive) { /* Dialogs.Overlays.Break_PerformanceOL = true; OL_Thread3.Join(); */ }
-					else { /* OL_Thread3.Start(); */ }
+					Dialogs.Info(60, "Thread management", new string[] {
+						"Performance overlay is not implemented on Linux.",
+						"It would require platform-specific code to",
+						"gather performance metrics.",
+						"",
+						"On Windows, it could be implemented using",
+						"the PerformanceCounter class from System.Diagnostics.",
+						"",
+						"On Linux, a different approach would be needed,",
+						"such as reading from /proc/stat or using a",
+						"third-party library."
+					});
+
+					// Performance overlay not implemented on Linux //
+					//if (OL_Thread3.IsAlive) { /* Dialogs.Overlays.Break_PerformanceOL = true; OL_Thread3.Join(); */ }
+					//else { /* OL_Thread3.Start(); */ }
 				}
 				else if (Input == "@exited") { /* Exit to main menu */ }
 				else { Console.WriteLine("Invalid input!"); }
