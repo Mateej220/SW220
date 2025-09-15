@@ -22,17 +22,19 @@ namespace SW220
 					lock (Draw.ConsoleLock) // Ensure thread-safe access to the console
 					{
 						var Time = DateTime.Now.ToString("HH:mm:ss");
-						var Content = new Markup(
-							"[white on black] " +
-							SystemVersion + " (" + SystemArch + ")" +
-							General.Repeat(" ", Console.WindowWidth / 2 - (SystemVersion.Length + SystemArch.Length + 4) - (HostName.Length / 2)) +
-							HostName +
-							General.Repeat(" ", Console.WindowWidth / 2 - (HostName.Length / 2) - Time.Length - 1) +
-							Time + " [/]"
-						);
+						var Base = new Markup("[white on black]" + General.Repeat(" ", Console.WindowWidth) + "[/]");
 
 						AnsiConsole.Cursor.SetPosition(0, 0);
-						AnsiConsole.Write(Content);
+						AnsiConsole.Write(Base);
+
+						AnsiConsole.Cursor.SetPosition(2, 0);
+						AnsiConsole.Write(new Markup("[white on black]" + SystemVersion + " (" + SystemArch + ")" + "[/]"));
+
+						AnsiConsole.Cursor.SetPosition((Console.WindowWidth / 2) - (HostName.Length / 2), 0);
+						AnsiConsole.Write(new Markup("[white on black]" + HostName + "[/]"));
+
+						AnsiConsole.Cursor.SetPosition(Console.WindowWidth - Time.Length, 0);
+						AnsiConsole.Write(new Markup("[white on black]" + Time + "[/]"));
 					}
 					Thread.Sleep(refresh_rate);
 				}
