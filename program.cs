@@ -1,46 +1,52 @@
-﻿namespace SW220
+﻿using System.Reflection.Metadata;
+
+namespace SW220
 {
 	public class Program
 	{
+		// Overlay threads //
+		public static int OLDT_Width = 40;
+		public static int OLDT_PosX = Console.WindowWidth - OLDT_Width - 2;
+		public static int OLDT_PosY = 3;
+
+		public static Thread OL_Thread1 = new(() => Dialogs.Overlays.DateTimeOL(OLDT_PosX, OLDT_PosY, OLDT_Width));
+		public static Thread OL_Thread2 = new(() => Dialogs.Overlays.InfoPanelOL());
+		public static Thread OL_Thread3 = null!;
+
 		static void Main(string[] args)
 		{
 			// Program entrance //
-			Dialogs.Input(48, "Login window", ["Username:"]);
 			Console.WriteLine("--- SW220 LIB ---");
 
-			int OL_Width = 40;
-			int OL_PosX = Console.WindowWidth - OL_Width - 2;
-			int OL_PosY = 2;
+		URepeat:
+			if (Dialogs.Input(48, "Login window", ["Username:"], "Next", false) == "Administrator") { }
+			else { Dialogs.Info(48, "Login window", ["Invalid username!"]); goto URepeat; }
+		PRepeat:
+			if (Dialogs.Input(48, "Login window", ["Password:"], "Login", true) == "administrator128") { }
+			else { Dialogs.Info(48, "Login window", ["Invalid password!"]); goto PRepeat; }
 
-			Thread OL_Thread1 = new(() => Dialogs.Overlays.DateTimeOL(OL_PosX, OL_PosY, OL_Width));
-			Thread OL_Thread2 = new(() => Dialogs.Overlays.InfoPanelOL());
-
-			OL_Thread1.Start();
 			OL_Thread2.Start();
 
-			Repeat:
+		MainMenu:
 			string Input = Dialogs.Menu(48, "Main menu", new string[] {
 				"Use up and down arrows to navigate",
 				"Press Enter to select an item" }, new Dictionary<string, string> {
 				{ "A1", "About library" },
-				{ "A2", "Stop date & time overlay"},
+				{ "A2", "Thread management"},
 				{ "EX", "Exit application" } });
 
-			if (Input == "A1") { MenuItems.About(); goto Repeat; }
-			else if (Input == "A2") { Dialogs.Overlays.Break_DateTimeOL = true; goto Repeat; }
+			if (Input == "A1") { MenuItems.About(); goto MainMenu; }
+			else if (Input == "A2") { MenuItems.ThreadManagement(); goto MainMenu; }
 			else if (Input == "EX") { /* Exit app */ }
 			else if (Input == "@exited") { /* Exit app */ }
-			else { Console.WriteLine("Invalid input!"); goto Repeat; }
+			else { Console.WriteLine("Invalid input!"); goto MainMenu; }
 
 			// Exit //
-			
+
 			// Wait for the overlay thread to finish peacefully before exiting the program //
 			// OL_Thread.Abort(); // (forcefully stops the thread - throws exception around platform support)
-			Dialogs.Overlays.Break_DateTimeOL = true;
-			OL_Thread1.Join();
-
-			Dialogs.Overlays.Break_InfoPanelOL = true;
-			OL_Thread2.Join();
+			if (OL_Thread1.IsAlive) { Dialogs.Overlays.Break_DateTimeOL = true; OL_Thread1.Join(); }
+			if (OL_Thread2.IsAlive) { Dialogs.Overlays.Break_InfoPanelOL = true; OL_Thread2.Join(); }
 
 			return;
 		}
@@ -58,6 +64,40 @@
 					"",
 					"(c) 2025 SW220 contributors"
 				});
+
+				return;
+			}
+
+			public static void ThreadManagement()
+			{
+				string DT_Status = OL_Thread1.IsAlive ? "Stop" : "Start";
+				string IP_Status = OL_Thread2.IsAlive ? "Stop" : "Start";
+				string PC_Status = "Start";//OL_Thread3.IsAlive ? "Start" : "Stop";
+
+				var Input = Dialogs.Menu(48, "Thread management", new string[] {
+					"Use up and down arrows to navigate",
+					"Press Enter to start/stop thread" }, new Dictionary<string, string> {
+					{ "DT", DT_Status + " Date & time overlay" },
+					{ "IP", IP_Status + " Information panel overlay"},
+					{ "PC", PC_Status + " Performance overlay" } });
+
+				if (Input == "DT")
+				{
+					if (OL_Thread1.IsAlive) { Dialogs.Overlays.Break_DateTimeOL = true; OL_Thread1.Join(); }
+					else { OL_Thread1 = new(() => Dialogs.Overlays.DateTimeOL(OLDT_PosX, OLDT_PosY, OLDT_Width)); OL_Thread1.Start(); }
+				}
+				else if (Input == "IP")
+				{
+					if (OL_Thread2.IsAlive) { Dialogs.Overlays.Break_InfoPanelOL = true; OL_Thread2.Join(); }
+					else { OL_Thread2 = new(() => Dialogs.Overlays.InfoPanelOL()); OL_Thread2.Start(); }
+				}
+				else if (Input == "PC")
+				{
+					if (OL_Thread3.IsAlive) { /* Dialogs.Overlays.Break_PerformanceOL = true; OL_Thread3.Join(); */ }
+					else { /* OL_Thread3.Start(); */ }
+				}
+				else if (Input == "@exited") { /* Exit to main menu */ }
+				else { Console.WriteLine("Invalid input!"); }
 
 				return;
 			}
