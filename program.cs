@@ -11,10 +11,11 @@
 			int OL_PosX = Console.WindowWidth - OL_Width - 2;
 			int OL_PosY = 2;
 
-			Thread OL_Thread = new(() => Dialogs.Overlays.DateTimeOL(OL_PosX, OL_PosY, OL_Width));
+			Thread OL_Thread1 = new(() => Dialogs.Overlays.DateTimeOL(OL_PosX, OL_PosY, OL_Width));
+			Thread OL_Thread2 = new(() => Dialogs.Overlays.InfoPanelOL());
 
-			OL_Thread.Start();
-			Thread.Sleep(100); // Give overlay some time to start
+			OL_Thread1.Start();
+			OL_Thread2.Start();
 
 			Repeat:
 			string Input = Dialogs.Menu(48, "Main menu", new string[] {
@@ -35,7 +36,11 @@
 			// Wait for the overlay thread to finish peacefully before exiting the program //
 			// OL_Thread.Abort(); // (forcefully stops the thread - throws exception around platform support)
 			Dialogs.Overlays.Break_DateTimeOL = true;
-			OL_Thread.Join();
+			OL_Thread1.Join();
+
+			Dialogs.Overlays.Break_InfoPanelOL = true;
+			OL_Thread2.Join();
+
 			return;
 		}
 
