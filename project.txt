@@ -1,0 +1,12 @@
+# --- Microsoft Visual Studio Code recommended settings --- #
+    editor.insertSpaces     = false
+    csharp.debug.console    = externalTerminal
+    # - Running the program inside of the VS-Code terminal  #
+    #     can throw error messages and make program unable  #
+    #     to debug / run.                                   #
+    # - All code files inside of this project have been     #
+    #     written with indentation set on Tab size: 4.      #
+    #     Settings ~.insertSpaces to false is just to keep  #
+    #     hierarchy / structure for the whole code.         #
+    #     (VS-Code will not go into space indent. when      #
+    #     creating a new file).                             #
